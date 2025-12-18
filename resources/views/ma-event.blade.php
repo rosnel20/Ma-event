@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/style.css">
     <title>Ma Event Surprise</title>
@@ -715,30 +716,39 @@ document.querySelectorAll('.btn-choose').forEach(button => {
     });
 });
 </script>
-<script>
 document.addEventListener('DOMContentLoaded', function() {
     const contactForm = document.getElementById('contactForm');
     const successMessage = document.getElementById('successMessage');
 
     if (contactForm) {
-        contactForm.addEventListener('submit', function(e) {
+        contactForm.addEventListener('submit', async function(e) {
             e.preventDefault();
 
-            // Validation basique
-            const formData = new FormData(contactForm);
-            let isValid = true;
+            // Récupérer les données du formulaire
+            const formData = new FormData(this);
+            const data = Object.fromEntries(formData);
 
-            // Vérifier que tous les champs requis sont remplis
-            for (let [key, value] of formData.entries()) {
-                if (!value.trim()) {
-                    isValid = false;
-                    break;
-                }
-            }
+            // Désactiver le bouton pendant l'envoi
+            const submitBtn = this.querySelector('.btn-submit');
+            const btnText = submitBtn.querySelector('.btn-text');
+            const originalText = btnText.textContent;
+            btnText.textContent = 'Envoi en cours...';
+            submitBtn.disabled = true;
 
-            if (isValid) {
-                // Simuler l'envoi (remplacez par votre logique d'envoi réelle)
-                setTimeout(() => {
+            try {
+                const response = await fetch('/contact', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
                     // Afficher le message de succès
                     successMessage.classList.add('show');
 
@@ -749,28 +759,20 @@ document.addEventListener('DOMContentLoaded', function() {
                     setTimeout(() => {
                         successMessage.classList.remove('show');
                     }, 5000);
-                }, 500);
-            } else {
-                alert('Veuillez remplir tous les champs requis.');
+                } else {
+                    alert('Une erreur est survenue. Veuillez réessayer.');
+                }
+            } catch (error) {
+                alert('Erreur de connexion. Veuillez vérifier votre connexion internet.');
+                console.error('Erreur:', error);
+            } finally {
+                // Réactiver le bouton
+                btnText.textContent = originalText;
+                submitBtn.disabled = false;
             }
         });
     }
-
-    // Animation des champs au focus
-    const formControls = document.querySelectorAll('.form-control');
-    formControls.forEach(control => {
-        control.addEventListener('focus', function() {
-            this.parentElement.classList.add('focused');
-        });
-
-        control.addEventListener('blur', function() {
-            if (!this.value) {
-                this.parentElement.classList.remove('focused');
-            }
-        });
-    });
 });
-</script>
 <script>
         // Newsletter form
         document.querySelector('.newsletter-form').addEventListener('submit', function(e) {
