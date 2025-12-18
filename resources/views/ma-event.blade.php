@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
-    <link rel="stylesheet" href="assets/style.css">
+    <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/style.css') }}">
     <title>Ma Event Surprise</title>
 </head>
 <body>
@@ -95,28 +95,28 @@
                     <div class="hero-images">
                         <div class="floating-image img-1">
                             <div class="image-card">
-                                <div class="card-icon"><img src="assets/img/téléchargement.jpeg" alt="" </div>
+                                <div class="card-icon"><img src="{{ asset('assets/img/téléchargement.jpeg') }}" alt="Mariages"></div>
                                 <h5>Mariages</h5>
                                 <p>Des cérémonies de rêve</p>
                             </div>
                         </div>
                         <div class="floating-image img-2">
                             <div class="image-card">
-                                <div class="card-icon"><img src="assets/img/téléchargement.jpeg" alt="" </div>
+                                <div class="card-icon"><img src="{{ asset('assets/img/téléchargement.jpeg') }}" alt="Mariages"></div>
                                 <h5>Anniversaires</h5>
                                 <p>Fêtes inoubliables</p>
                             </div>
                         </div>
                         <div class="floating-image img-3">
                             <div class="image-card">
-                                <div class="card-icon"><img src="assets/img/téléchargement.jpeg" alt="" ></div>
+                                <div class="card-icon"><img src="{{ asset('assets/img/téléchargement.jpeg') }}" alt="Corporate"></div>
                                 <h5>Corporate</h5>
                                 <p>Événements pros</p>
                             </div>
                         </div>
                         <div class="floating-image img-4">
                             <div class="image-card">
-                                <div class="card-icon"><img src="assets/img/téléchargement.jpeg" alt="" </div>
+                                <div class="card-icon"><img src="{{ asset('assets/img/téléchargement.jpeg') }}" alt="Mariages"></div>
                                 <h5>Galas</h5>
                                 <p>Soirées prestigieuses</p>
                             </div>
@@ -413,7 +413,7 @@
 </section>
 
 <!-- Section Contact -->
-<section class="contact-section"id="contact">
+<section class="contact-section" id="contact">
     <div class="container">
         <div class="row align-items-center">
             <!-- Colonne Gauche - Informations -->
@@ -528,7 +528,8 @@
                             <div class="col-12">
                                 <div class="form-group">
                                     <label for="message" class="form-label">Message</label>
-                                    <textarea class="form-control" id="message" name="message" rows="5" required></textarea>
+                                    <textarea class="form-control" id="message" name="message" rows="5" maxlength="5000" required></textarea>
+                                    <small class="form-text text-muted">Maximum 5000 caractères</small>
                                 </div>
                             </div>
 
@@ -686,101 +687,11 @@
         </div>
     </footer>
     <!-- Scripts Bootstrap -->
-    <script src="assets/js/bootstrap.bundle.min.js"></script>
- <script>
-// Animation de la timeline au scroll
-window.addEventListener('scroll', function() {
-    const packsSection = document.querySelector('.packs-section');
-    const timelineProgress = document.getElementById('timelineProgress');
-
-    if (packsSection && timelineProgress) {
-        const sectionTop = packsSection.offsetTop;
-        const sectionHeight = packsSection.offsetHeight;
-        const scrollPosition = window.scrollY + window.innerHeight / 2;
-
-        if (scrollPosition > sectionTop) {
-            const scrollInSection = scrollPosition - sectionTop;
-            const percentComplete = Math.min((scrollInSection / sectionHeight) * 100, 100);
-            timelineProgress.style.width = percentComplete + '%';
-        } else {
-            timelineProgress.style.width = '0%';
-        }
-    }
-});
-
-// Effet de clic sur les boutons
-document.querySelectorAll('.btn-choose').forEach(button => {
-    button.addEventListener('click', function() {
-        // Ajoutez votre logique ici
-        console.log('Pack sélectionné');
-    });
-});
-</script>
-document.addEventListener('DOMContentLoaded', function() {
-    const contactForm = document.getElementById('contactForm');
-    const successMessage = document.getElementById('successMessage');
-
-    if (contactForm) {
-        contactForm.addEventListener('submit', async function(e) {
-            e.preventDefault();
-
-            // Récupérer les données du formulaire
-            const formData = new FormData(this);
-            const data = Object.fromEntries(formData);
-
-            // Désactiver le bouton pendant l'envoi
-            const submitBtn = this.querySelector('.btn-submit');
-            const btnText = submitBtn.querySelector('.btn-text');
-            const originalText = btnText.textContent;
-            btnText.textContent = 'Envoi en cours...';
-            submitBtn.disabled = true;
-
-            try {
-                const response = await fetch('/contact', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                        'Accept': 'application/json'
-                    },
-                    body: JSON.stringify(data)
-                });
-
-                const result = await response.json();
-
-                if (result.success) {
-                    // Afficher le message de succès
-                    successMessage.classList.add('show');
-
-                    // Réinitialiser le formulaire
-                    contactForm.reset();
-
-                    // Cacher le message après 5 secondes
-                    setTimeout(() => {
-                        successMessage.classList.remove('show');
-                    }, 5000);
-                } else {
-                    alert('Une erreur est survenue. Veuillez réessayer.');
-                }
-            } catch (error) {
-                alert('Erreur de connexion. Veuillez vérifier votre connexion internet.');
-                console.error('Erreur:', error);
-            } finally {
-                // Réactiver le bouton
-                btnText.textContent = originalText;
-                submitBtn.disabled = false;
-            }
-        });
-    }
-});
-<script>
-        // Newsletter form
-        document.querySelector('.newsletter-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const email = this.querySelector('input').value;
-            alert('Merci pour votre inscription ! Nous vous enverrons nos meilleures offres.');
-            this.reset();
-        });
-    </script>
+    <script src="{{ asset('assets/js/bootstrap.bundle.min.js') }}"></script>
+    
+    <!-- Scripts personnalisés -->
+    <script src="{{ asset('js/packs-timeline.js') }}"></script>
+    <script src="{{ asset('js/contact-form.js') }}"></script>
+    <script src="{{ asset('js/newsletter.js') }}"></script>
 </body>
 </html>
