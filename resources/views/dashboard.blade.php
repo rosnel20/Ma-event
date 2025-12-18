@@ -1,18 +1,74 @@
 <x-layouts.app :title="__('Dashboard')">
-    <div class="flex h-full w-full flex-1 flex-col gap-4 rounded-xl">
-        <div class="grid auto-rows-min gap-4 md:grid-cols-3">
-            <div class="relative aspect-video overflow-hidden rounded-xl border border-neutral-200 dark:border-neutral-700">
-                <x-placeholder-pattern class="absolute inset-0 size-full stroke-gray-900/20 dark:stroke-neutral-100/20" />
+    <div style="padding: var(--space-6);">
+        <div style="margin-bottom: var(--space-8);">
+            <h1 style="font-size: var(--text-4xl); font-weight: var(--font-bold); color: var(--color-text-primary); margin-bottom: var(--space-2);">
+                Tableau de bord
+            </h1>
+            <p style="color: var(--color-text-secondary); font-size: var(--text-lg);">
+                Bienvenue sur votre espace personnel
+            </p>
+        </div>
+
+        <!-- Stats Cards -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: var(--space-6); margin-bottom: var(--space-8);">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Messages reçus</h3>
+                </div>
+                <div class="card-body">
+                    <div style="font-size: var(--text-4xl); font-weight: var(--font-bold); color: var(--color-primary);">
+                        0
+                    </div>
+                    <p style="color: var(--color-text-secondary); margin: var(--space-2) 0 0;">Nouveaux messages</p>
+                </div>
             </div>
-            <div class="relative aspect-video overflow-hidden rounded-xl border border-neutral-200 dark:border-neutral-700">
-                <x-placeholder-pattern class="absolute inset-0 size-full stroke-gray-900/20 dark:stroke-neutral-100/20" />
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Événements</h3>
+                </div>
+                <div class="card-body">
+                    <div style="font-size: var(--text-4xl); font-weight: var(--font-bold); color: var(--color-primary);">
+                        0
+                    </div>
+                    <p style="color: var(--color-text-secondary); margin: var(--space-2) 0 0;">Événements à venir</p>
+                </div>
             </div>
-            <div class="relative aspect-video overflow-hidden rounded-xl border border-neutral-200 dark:border-neutral-700">
-                <x-placeholder-pattern class="absolute inset-0 size-full stroke-gray-900/20 dark:stroke-neutral-100/20" />
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Clients</h3>
+                </div>
+                <div class="card-body">
+                    <div style="font-size: var(--text-4xl); font-weight: var(--font-bold); color: var(--color-primary);">
+                        0
+                    </div>
+                    <p style="color: var(--color-text-secondary); margin: var(--space-2) 0 0;">Clients actifs</p>
+                </div>
             </div>
         </div>
-        <div class="relative h-full flex-1 overflow-hidden rounded-xl border border-neutral-200 dark:border-neutral-700">
-            <x-placeholder-pattern class="absolute inset-0 size-full stroke-gray-900/20 dark:stroke-neutral-100/20" />
+
+        <!-- Recent Activity -->
+        <div class="card" style="margin-bottom: var(--space-6);">
+            <div class="card-header">
+                <h3 class="card-title">Activité récente</h3>
+            </div>
+            <div class="card-body">
+                <p style="color: var(--color-text-secondary); text-align: center; padding: var(--space-8);">
+                    Aucune activité récente
+                </p>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Actions rapides</h3>
+            </div>
+            <div class="card-body">
+                <div style="display: flex; gap: var(--space-4); flex-wrap: wrap;">
+                    <a href="#contact" class="btn btn-primary">Voir les messages</a>
+                    <a href="{{ route('profile.edit') }}" class="btn btn-secondary">Modifier le profil</a>
+                </div>
+            </div>
         </div>
     </div>
 </x-layouts.app>
