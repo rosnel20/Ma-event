@@ -682,6 +682,11 @@
                     &copy; 2025 <a href="#">Ma Event Surprise</a>. Tous droits réservés.
                     Créé avec amour au Cameroun
                 </p>
+                <p style="margin-top: 12px; font-size: 0.9rem; color: rgba(255, 255, 255, 0.7);">
+                    Développé par <a href="https://twitter.com/MrRosnel" target="_blank" rel="noopener noreferrer" style="color: rgba(255, 255, 255, 0.9); text-decoration: none; font-weight: 500;">@Mr Rosnel</a>
+                    <span style="margin: 0 8px;">•</span>
+                    Hébergé par <a href="https://kencode.dev" target="_blank" rel="noopener noreferrer" style="color: rgba(255, 255, 255, 0.9); text-decoration: none; font-weight: 500;">@kencode.dev</a>
+                </p>
             </div>
         </div>
     </footer>
