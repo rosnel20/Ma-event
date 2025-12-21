@@ -40,3 +40,24 @@ Route::post('/contact', [ContactController::class, 'store'])->name('contact.stor
 
 
 
+// Ajoutez temporairement cette route pour tester
+Route::get('/test-mail', function() {
+    try {
+        Mail::raw('Test email', function($message) {
+            $message->to('mrrosnel6@gmail.com')
+                    ->subject('Test Ma Event Surprise');
+        });
+        return 'Email envoyé avec succès!';
+    } catch (\Exception $e) {
+        return 'Erreur: ' . $e->getMessage();
+    }
+});
+
+Route::post('/contact-debug', function(Request $request) {
+    dd([
+        'all_data' => $request->all(),
+        'json_data' => $request->json()->all(),
+        'has_csrf' => $request->hasHeader('X-CSRF-TOKEN'),
+        'csrf_token' => $request->header('X-CSRF-TOKEN')
+    ]);
+});
