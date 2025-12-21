@@ -780,23 +780,19 @@ document.addEventListener('DOMContentLoaded', function() {
             submitBtn.disabled = true;
 
             try {
-           const response = await fetch('/contact', {  // ← Changez ici
-    method: 'POST',
-    headers: {
-        'Content-Type': 'application/json',
-        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || '',
-        'Accept': 'application/json'
-    },
-    body: JSON.stringify(data)
-});
-
-// Ajoutez cette ligne pour voir l'erreur exacte
-console.log('Response status:', response.status);
-console.log('Response:', await response.clone().text());
+                const response = await fetch('/contact', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || '',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
 
                 const result = await response.json();
 
-                if (result.success) {
+                if (response.ok && result.success) {
                     // Afficher le message de succès
                     successMessage.classList.add('show');
 
@@ -808,11 +804,20 @@ console.log('Response:', await response.clone().text());
                         successMessage.classList.remove('show');
                     }, 5000);
                 } else {
-                    alert('Une erreur est survenue. Veuillez réessayer.');
+                    // Gérer les erreurs de validation
+                    let errorMessage = result.message || 'Une erreur est survenue. Veuillez réessayer.';
+                    
+                    // Si des erreurs de validation sont présentes, les afficher
+                    if (result.errors) {
+                        const errorList = Object.values(result.errors).flat().join('\n');
+                        errorMessage = 'Veuillez corriger les erreurs suivantes :\n' + errorList;
+                    }
+                    
+                    alert(errorMessage);
                 }
             } catch (error) {
-                alert('Erreur de connexion. Veuillez vérifier votre connexion internet.');
                 console.error('Erreur:', error);
+                alert('Erreur de connexion. Veuillez vérifier votre connexion internet et réessayer.');
             } finally {
                 // Réactiver le bouton
                 btnText.textContent = originalText;

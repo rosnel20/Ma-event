@@ -21,7 +21,15 @@ class ContactReceived extends Mailable
 
     public function build()
     {
-        return $this->subject(' Ma Event Surprise')
+        $subjectLabel = match($this->contact->subject) {
+            'pack' => 'Information sur les packs',
+            'devis' => 'Demande de devis',
+            'reservation' => 'Réservation',
+            'autre' => 'Autre demande',
+            default => 'Nouveau message',
+        };
+
+        return $this->subject('Nouveau message de contact - ' . $subjectLabel)
                     ->view('emails.contact');
     }
 }
