@@ -485,16 +485,16 @@
                     <form class="contact-form" id="contactForm">
                         <div class="row g-4">
                             <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="firstName" class="form-label">Prénom</label>
-                                    <input type="text" class="form-control" id="firstName" name="firstName" required>
-                                </div>
+                            <div class="form-group">
+                            <label for="first_name" class="form-label">Prénom</label>
+                            <input type="text" class="form-control" id="firstName" name="first_name" required>
+                            </div>
                             </div>
 
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="lastName" class="form-label">Nom</label>
-                                    <input type="text" class="form-control" id="lastName" name="lastName" required>
+                                    <label for="last_name" class="form-label">Nom</label>
+                                    <input type="text" class="form-control" id="lastName" name="last_name" required>
                                 </div>
                             </div>
 
@@ -712,10 +712,49 @@ window.addEventListener('scroll', function() {
 document.querySelectorAll('.btn-choose').forEach(button => {
     button.addEventListener('click', function() {
         // Ajoutez votre logique ici
+        // Effet de clic sur les boutons des packs
+document.querySelectorAll('.btn-choose').forEach(button => {
+    button.addEventListener('click', function() {
+        // Récupérer le nom du pack sélectionné
+        const packCard = this.closest('.pack-card');
+        const packName = packCard.querySelector('.pack-name').textContent;
+        const packPrice = packCard.querySelector('.pack-price').textContent;
+
+        // Pré-remplir le formulaire avec les infos du pack
+        const subjectSelect = document.getElementById('subject');
+        const messageTextarea = document.getElementById('message');
+
+        // Sélectionner "Information sur les packs" dans le sujet
+        if (subjectSelect) {
+            subjectSelect.value = 'pack';
+        }
+
+        // Pré-remplir le message avec le pack choisi
+        if (messageTextarea) {
+            messageTextarea.value = `Bonjour,\n\nJe suis intéressé(e) par le pack "${packName}" à ${packPrice} FCFA.\n\nPouvez-vous me donner plus d'informations ?\n\nMerci.`;
+        }
+
+        // Scroll smooth vers le formulaire de contact
+        const contactSection = document.getElementById('contact');
+        if (contactSection) {
+            contactSection.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+
+        // Ajouter un effet visuel au bouton
+        this.classList.add('clicked');
+        setTimeout(() => {
+            this.classList.remove('clicked');
+        }, 300);
+    });
+});
         console.log('Pack sélectionné');
     });
 });
 </script>
+<script>
 document.addEventListener('DOMContentLoaded', function() {
     const contactForm = document.getElementById('contactForm');
     const successMessage = document.getElementById('successMessage');
@@ -736,15 +775,19 @@ document.addEventListener('DOMContentLoaded', function() {
             submitBtn.disabled = true;
 
             try {
-                const response = await fetch('/contact', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                        'Accept': 'application/json'
-                    },
-                    body: JSON.stringify(data)
-                });
+           const response = await fetch('/contact', {  // ← Changez ici
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || '',
+        'Accept': 'application/json'
+    },
+    body: JSON.stringify(data)
+});
+
+// Ajoutez cette ligne pour voir l'erreur exacte
+console.log('Response status:', response.status);
+console.log('Response:', await response.clone().text());
 
                 const result = await response.json();
 
@@ -773,6 +816,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
+</script>
 <script>
         // Newsletter form
         document.querySelector('.newsletter-form').addEventListener('submit', function(e) {

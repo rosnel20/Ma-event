@@ -21,7 +21,7 @@ class ContactReceived extends Mailable
 
     public function build()
     {
-        return $this->subject('📩 Nouveau message - Ma Event Surprise')
+        return $this->subject(' Ma Event Surprise')
                     ->view('emails.contact');
     }
 }
